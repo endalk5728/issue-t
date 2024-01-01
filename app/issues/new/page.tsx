@@ -35,6 +35,17 @@ export default function App() {
 const  [error,setError]=useState('');
 
 const [isSubmitting,setSubmitting]=useState(false);
+const onSubmit=handleSubmit( async (data)=>{
+
+  try {
+    setSubmitting(true);
+    
+    await axios.post('/api/issues',data);
+    router.push('/issues');
+  } catch (error) {
+    setSubmitting(false);
+   setError('An unexpected error occourred')
+  }});
 
   return (
     <div className="max-w-xl">
@@ -46,19 +57,9 @@ const [isSubmitting,setSubmitting]=useState(false);
   </Callout.Text>
 </Callout.Root>
 }
-    <form className=" space-y-3" onSubmit={handleSubmit( async (data)=>{
-
-      try {
-        setSubmitting(true);
-        
-        await axios.post('/api/issues',data);
-        router.push('/issues');
-      } catch (error) {
-        setSubmitting(false);
-       setError('An unexpected error occourred')
-      }
+    <form className=" space-y-3" onSubmit={onSubmit}
      
-    })}>
+    >
    
       <Input  type="text" placeholder="Enter your title" {...register('title')}/>
 
